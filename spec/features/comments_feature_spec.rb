@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 feature 'commenting' do
-  before { Picture.create title: "test"}
+  before { Picture.create title: "test" }
 
   scenario 'a user can add a comment to the picture' do
     visit '/'
