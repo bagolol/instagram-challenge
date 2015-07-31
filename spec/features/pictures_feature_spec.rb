@@ -1,24 +1,28 @@
 require 'rails_helper'
+require_relative '../helpers/session_helpers'
+include Session
 
 feature 'pictures' do
 
   before do
-    visit('/')
-    click_link('Sign up')
-    fill_in('Email', with: 'test@example.com')
-    fill_in('Password', with: 'testtest')
-    fill_in('Password confirmation', with: 'testtest')
-    click_button('Sign up')
+    email = 'test@test.com'
+    password = 'testtest'
+    sign_up(email, password)
   end
 
-  context 'no pictures have been added' do
-    scenario 'should display a prompt to add a picture' do
+  context 'upload a picture' do
+    scenario 'should display a prompt to add a picture when user is signed in' do
       visit '/pictures'
       expect(page).to have_content 'No pictures yet'
       expect(page).to have_link 'Upload a picture'
     end
+     scenario 'should NOT display a prompt to add a picture when user is signed out' do
+      visit('/')
+      click_link('Sign out')
+      expect(page).not_to have_content('Upload a picture')
+    end
 
-    scenario 'add a Picture' do
+    scenario 'add a picture when signed in' do
       visit('/')
       click_link('Upload a picture')
       attach_file('Image', File.join(Rails.root, 'spec', 'features/uploads', 'dover.jpg'))
@@ -31,7 +35,6 @@ feature 'pictures' do
   end
 
   context 'deleting pictures' do
-
     before { Picture.create title: 'at the sea' }
 
     scenario 'removes a picture when a user clicks a delete link' do
@@ -40,6 +43,5 @@ feature 'pictures' do
       expect(page).not_to have_content 'at the sea'
       expect(page).to have_content 'Picture deleted successfully'
     end
-
   end
 end
