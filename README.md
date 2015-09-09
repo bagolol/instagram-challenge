@@ -37,12 +37,6 @@ Further Development
 
 *  Use AWS to host pictures
 
-* Add Bootstrap 
-
-* Resolve issues with pending tests
-
-*  Add further validations around comments, likes 
-
 * Deploy on Heroku
 
 
